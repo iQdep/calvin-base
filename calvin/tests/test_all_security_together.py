@@ -497,9 +497,13 @@ class TestSecurity(unittest.TestCase):
         except Exception as err:
             _log.error("Failed to get actors from runtimes, err={}".format(err))
             raise
-        assert result['actor_map']['correctly_signed:src'] in actors[2]
-        assert result['actor_map']['correctly_signed:sum'] in actors[2]
-        assert result['actor_map']['correctly_signed:snk'] in actors[2]
+        try:
+            assert result['actor_map']['correctly_signed:src'] in actors[2]
+            assert result['actor_map']['correctly_signed:sum'] in actors[2]
+            assert result['actor_map']['correctly_signed:snk'] in actors[2]
+        except Exception as err:
+            _log.error("Actor assertion failed, \n\tactors={}\n\terr={}".format(actors, err))
+            raise
 
         snk = result['actor_map']['correctly_signed:snk']
         request_handler.set_credentials({"user": "user0", "password": "pass0"})
